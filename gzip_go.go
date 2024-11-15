@@ -1,4 +1,4 @@
-package gzip_go
+package gzip
 
 import (
 	"bytes"
@@ -11,11 +11,13 @@ type Gzipgo struct {
 	Decompressed string
 }
 
+// NewGzip initializes a Gzipgo object
 func NewGzip() *Gzipgo {
 	return &Gzipgo{}
 }
 
-func (gz *Gzipgo) Compress(str string) error {
+// Compress, compress a string and returns a Gzipgo pointer and an error if there is one
+func (gz *Gzipgo) Compress(str string) (*Gzipgo, error) {
 	chanErr := make(chan error)
 	var gzp *gzip.Writer
 	var zpd bytes.Buffer
@@ -37,25 +39,26 @@ func (gz *Gzipgo) Compress(str string) error {
 		chanErr <- nil
 	}()
 	if err := <-chanErr; err != nil {
-		return err
+		return nil, err
 	}
 
 	gz.Compressed = base64.StdEncoding.EncodeToString(zpd.Bytes())
-	return nil
+	return gz, nil
 }
 
-func (gz *Gzipgo) Decompress(base64Str string) error {
+// Decompress, decompresses a string and returns a Gzipgo pointer and an error if there is one
+func (gz *Gzipgo) Decompress(base64Str string) (*Gzipgo, error) {
 	chanErr := make(chan error)
 	var strUn bytes.Buffer
 	var str bytes.Buffer
 	decoded, err := base64.StdEncoding.DecodeString(base64Str)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	_, err = str.Write(decoded)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	go func() {
@@ -80,9 +83,19 @@ func (gz *Gzipgo) Decompress(base64Str string) error {
 	}()
 
 	if err := <-chanErr; err != nil {
-		return err
+		return nil, err
 	}
 
 	gz.Decompressed = strUn.String()
-	return nil
+	return gz, nil
+}
+
+// GetComp, returns the compressed string
+func (gz *Gzipgo) GetComp() string {
+	return gz.Compressed
+}
+
+// GetDecomp, returns the decompressed string
+func (gz *Gzipgo) GetDecomp() string {
+	return gz.Decompressed
 }

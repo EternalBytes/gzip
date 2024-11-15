@@ -1,3 +1,3 @@
-module github.com/EternalBytes/gzip_go
+module github.com/EternalBytes/gzip
 
 go 1.23.2
