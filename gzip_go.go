@@ -6,18 +6,18 @@ import (
 	"encoding/base64"
 )
 
-type Gzipgo struct {
+type gzipgo struct {
 	Compressed   string
 	Decompressed string
 }
 
 // NewGzip initializes a Gzipgo object
-func NewGzip() *Gzipgo {
-	return &Gzipgo{}
+func NewGzip() *gzipgo {
+	return &gzipgo{}
 }
 
 // Compress, compress a string and returns a Gzipgo pointer and an error if there is one
-func (gz *Gzipgo) Compress(str string) (*Gzipgo, error) {
+func (gz *gzipgo) Compress(str string) (*gzipgo, error) {
 	chanErr := make(chan error)
 	var gzp *gzip.Writer
 	var zpd bytes.Buffer
@@ -47,7 +47,7 @@ func (gz *Gzipgo) Compress(str string) (*Gzipgo, error) {
 }
 
 // Decompress, decompresses a string and returns a Gzipgo pointer and an error if there is one
-func (gz *Gzipgo) Decompress(base64Str string) (*Gzipgo, error) {
+func (gz *gzipgo) Decompress(base64Str string) (*gzipgo, error) {
 	chanErr := make(chan error)
 	var strUn bytes.Buffer
 	var str bytes.Buffer
@@ -91,11 +91,11 @@ func (gz *Gzipgo) Decompress(base64Str string) (*Gzipgo, error) {
 }
 
 // GetComp, returns the compressed string
-func (gz *Gzipgo) GetComp() string {
+func (gz *gzipgo) GetComp() string {
 	return gz.Compressed
 }
 
 // GetDecomp, returns the decompressed string
-func (gz *Gzipgo) GetDecomp() string {
+func (gz *gzipgo) GetDecomp() string {
 	return gz.Decompressed
 }
