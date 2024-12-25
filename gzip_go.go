@@ -7,8 +7,8 @@ import (
 )
 
 type gzipgo struct {
-	Compressed   string
-	Decompressed string
+	compressed   string
+	decompressed string
 }
 
 // NewGzip initializes a Gzipgo object
@@ -42,7 +42,7 @@ func (gz *gzipgo) Compress(str string) (*gzipgo, error) {
 		return nil, err
 	}
 
-	gz.Compressed = base64.StdEncoding.EncodeToString(zpd.Bytes())
+	gz.compressed = base64.StdEncoding.EncodeToString(zpd.Bytes())
 	return gz, nil
 }
 
@@ -86,16 +86,16 @@ func (gz *gzipgo) Decompress(base64Str string) (*gzipgo, error) {
 		return nil, err
 	}
 
-	gz.Decompressed = strUn.String()
+	gz.decompressed = strUn.String()
 	return gz, nil
 }
 
 // GetComp, returns the compressed string
 func (gz *gzipgo) GetComp() string {
-	return gz.Compressed
+	return gz.compressed
 }
 
 // GetDecomp, returns the decompressed string
 func (gz *gzipgo) GetDecomp() string {
-	return gz.Decompressed
+	return gz.decompressed
 }
